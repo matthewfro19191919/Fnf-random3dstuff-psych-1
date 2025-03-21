@@ -595,23 +595,6 @@ class Character extends FlxSprite
 		}
 	}
 
-	public function tryLoadModel()
-	{
-		if (!isModel)
-			return;
-		if (modelMutex)
-			return;
-		if (isModel && beganLoading)
-			return;
-		if (isModel && !beganLoading)
-		{
-			beganLoading = true;
-			modelMutex = true;
-			model = new ModelThing(this);
-			modelMutexThing = model;
-		}
-	}
-
 	override public function destroy()
 	{
 		if (isModel)
