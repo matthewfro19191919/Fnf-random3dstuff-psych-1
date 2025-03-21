@@ -71,7 +71,7 @@ jobs:
       - name: Publish Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ReleaseBuild
+          name: WindowsBuild
           path: export/release/windows/bin
   buildMac:
     runs-on: macos-15
