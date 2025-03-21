@@ -82,16 +82,27 @@ class Character extends FlxSprite
 
 	public static var DEFAULT_CHARACTER:String = 'bf'; //In case a character is missing, it will use BF on its place
 	
+	// 3D
 	public var isModel:Bool = false;
+	public var modelView:ModelView;
 	public var beganLoading:Bool = false;
-	public var modelName:String;
+	public var modelName:String = "";
 	public var modelScale:Float = 1;
-	public var modelSpeed:Map<String, Float> = new Map<String, Float>();
 	public var model:ModelThing;
+	public var initYaw:Float = 0;
+	public var initPitch:Float = 0;
+	public var initRoll:Float = 0;
+	public var xOffset:Float = 0;
+	public var yOffset:Float = 0;
+	public var zOffset:Float = 0;
+	public var viewX:Float = 750;
+	public var viewY:Float = 750;
+	public var ambient:Float = 1;
+	public var specular:Float = 1;
+	public var diffuse:Float = 1;
+	public var animSpeed:Map<String, Float> = new Map<String, Float>();
 	public var noLoopList:Array<String> = [];
-	public var modelType:String = "md2";
-	public var md5Anims:Map<String, String> = new Map<String, String>();
-
+	public var isGlass:Bool = false;
 	public var spinYaw:Bool = false;
 	public var spinYawVal:Int = 0;
 	public var spinPitch:Bool = false;
@@ -100,15 +111,11 @@ class Character extends FlxSprite
 	public var spinRollVal:Int = 0;
 	public var yTween:FlxTween;
 	public var xTween:FlxTween;
-	public var originalY:Float = -1;
-	public var originalX:Float = -1;
-	public var circleTween:FlxTween;
-	public var initYaw:Float = 0;
-	public var initPitch:Float = 0;
-	public var initRoll:Float = 0;
-	public var initX:Float = 0;
-	public var initY:Float = 0;
-	public var initZ:Float = 0;
+	public var modelType:String = "md2";
+	public var md5Anims:Map<String, String> = new Map<String, String>();
+
+	public static var modelMutex:Bool = false;
+	public static var modelMutexThing:ModelThing;
 
 	public function new(x:Float, y:Float, ?character:String = 'bf', ?isPlayer:Bool = false)
 	{
@@ -285,7 +292,23 @@ class Character extends FlxSprite
 		originalFlipX = flipX;
 
 		recalculateDanceIdle();
+		initWidth = width;
+		initFrameWidth = frameWidth;
+		initHeight = height;
+		setFacingFlip((initFacing == FlxObject.LEFT ? FlxObject.RIGHT : FlxObject.LEFT), true, false);
+		// if (atlasContainer != null)
+		// 	atlasContainer.setFacingFlip((initFacing == FlxObject.LEFT ? FlxObject.RIGHT : FlxObject.LEFT), true, false);
+
 		dance();
+
+		facing = (isPlayer ? FlxObject.LEFT : FlxObject.RIGHT);
+
+		if (isModel)
+		{
+			modelView = new ModelView(viewX, viewY, ambient, specular, diffuse);
+			loadGraphicFromSprite(modelView.sprite);
+			antialiasing = true;
+		}
 
 		if (isPlayer)
 		{
@@ -332,6 +355,14 @@ class Character extends FlxSprite
 
 	override function update(elapsed:Float)
 	{
+		tryLoadModel();
+
+		if (isModel && model != null && model.fullyLoaded && modelView != null)
+		{
+			modelView.update();
+			model.update();
+		}
+
 		if(!debugMode && animation.curAnim != null)
 		{
 			if(heyTimer > 0)
@@ -529,5 +560,73 @@ class Character extends FlxSprite
 	public function quickAnimAdd(name:String, anim:String)
 	{
 		animation.addByPrefix(name, anim, 24, false);
+	}
+	public function tryLoadModel()
+	{
+		if (!isModel)
+			return;
+		if (modelMutex)
+			return;
+		if (isModel && beganLoading)
+			return;
+		if (isModel && !beganLoading)
+		{
+			beganLoading = true;
+			modelMutex = true;
+			model = new ModelThing(this);
+			modelMutexThing = model;
+		}
+	}
+
+	public function tryLoadModel()
+	{
+		if (!isModel)
+			return;
+		if (modelMutex)
+			return;
+		if (isModel && beganLoading)
+			return;
+		if (isModel && !beganLoading)
+		{
+			beganLoading = true;
+			modelMutex = true;
+			model = new ModelThing(this);
+			modelMutexThing = model;
+		}
+	}
+
+	override public function destroy()
+	{
+		if (isModel)
+		{
+			if (modelMutexThing == model)
+			{
+				modelMutexThing = null;
+				modelMutex = false;
+			}
+			if (model != null)
+				model.destroy();
+			model = null;
+			if (modelView != null)
+				modelView.destroy();
+			modelView = null;
+			if (animSpeed != null)
+			{
+				animSpeed.clear();
+				animSpeed = null;
+			}
+		}
+		if (animRedirect != null)
+		{
+			animRedirect.clear();
+			animRedirect = null;
+		}
+		if (animRedirect != null)
+		{
+			animRedirect.clear();
+			animRedirect = null;
+		}
+		// atlasContainer = FlxDestroyUtil.destroy(atlasContainer);
+		super.destroy();
 	}
 }
