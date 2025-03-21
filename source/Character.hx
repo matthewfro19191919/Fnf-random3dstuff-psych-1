@@ -589,7 +589,6 @@ class Character extends FlxSprite
 		{
 			beganLoading = true;
 			modelMutex = true;
-			model = new ModelThing(this);
 			modelMutexThing = model;
 		}
 	}
