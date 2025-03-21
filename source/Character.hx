@@ -633,16 +633,6 @@ class Character extends FlxSprite
 				animSpeed = null;
 			}
 		}
-		if (animRedirect != null)
-		{
-			animRedirect.clear();
-			animRedirect = null;
-		}
-		if (animRedirect != null)
-		{
-			animRedirect.clear();
-			animRedirect = null;
-		}
 		// atlasContainer = FlxDestroyUtil.destroy(atlasContainer);
 		super.destroy();
 	}
