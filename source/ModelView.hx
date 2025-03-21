@@ -2,6 +2,7 @@ package;
 
 import lime.graphics.opengl.GLFramebuffer;
 import sys.io.FileOutput;
+import flixel.util.FlxDestroyUtil;
 import flixel.FlxSprite;
 import flixel.graphics.FlxGraphic;
 import flixel.FlxG;
