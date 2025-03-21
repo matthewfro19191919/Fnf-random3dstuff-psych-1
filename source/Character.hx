@@ -322,7 +322,6 @@ class Character extends FlxSprite
 
 		if (isModel)
 		{
-			modelView = new ModelView(viewX, viewY, ambient, specular, diffuse);
 			loadGraphicFromSprite(modelView.sprite);
 			antialiasing = true;
 		}
