@@ -113,6 +113,15 @@ class Character extends FlxSprite
 	public var xTween:FlxTween;
 	public var modelType:String = "md2";
 	public var md5Anims:Map<String, String> = new Map<String, String>();
+	public var originalY:Float = -1;
+ 	public var originalX:Float = -1;
+ 	public var circleTween:FlxTween;
+ 	public var initYaw:Float = 0;
+ 	public var initPitch:Float = 0;
+ 	public var initRoll:Float = 0;
+ 	public var initX:Float = 0;
+ 	public var initY:Float = 0;
+ 	public var initZ:Float = 0;
 
 	public static var modelMutex:Bool = false;
 	public static var modelMutexThing:ModelThing;
