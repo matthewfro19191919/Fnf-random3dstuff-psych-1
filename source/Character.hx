@@ -1,6 +1,7 @@
 package;
 
 import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxAtlasFrames;
@@ -116,12 +117,19 @@ class Character extends FlxSprite
 	public var originalY:Float = -1;
  	public var originalX:Float = -1;
  	public var circleTween:FlxTween;
- 	public var initYaw:Float = 0;
- 	public var initPitch:Float = 0;
- 	public var initRoll:Float = 0;
  	public var initX:Float = 0;
  	public var initY:Float = 0;
  	public var initZ:Float = 0;
+	public var modelSpeed:Map<String, Float> = new Map<String, Float>();
+
+	public var initFacing:Int = FlxObject.RIGHT;
+
+	public var initWidth:Float = -1;
+	public var initFrameWidth:Int = -1;
+	public var initHeight:Float;
+
+	public var camOffsets:Array<Float> = [0, 0];
+	public var posOffsets:Array<Float> = [0, 0];
 
 	public static var modelMutex:Bool = false;
 	public static var modelMutexThing:ModelThing;
