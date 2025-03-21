@@ -127,4 +127,52 @@ class ModelView
 				view.scene.removeChildAt(i);
 		}
 	}
+
+	public function destroy()
+	{
+		cameraController = null;
+		_lookAtPosition = null;
+		if (view.camera != null)
+		{
+			view.camera.disposeWithChildren();
+			view.camera.disposeAsset();
+		}
+		if (light != null)
+			light.disposeWithChildren();
+		light = null;
+		if (lightPicker != null)
+			lightPicker.dispose();
+		lightPicker = null;
+		if (shadowMapMethod != null)
+			shadowMapMethod.dispose();
+		shadowMapMethod = null;
+		if (thing != null)
+		{
+			thing.dispose();
+		}
+		thing = null;
+		if (sprite != null && sprite.graphic != null)
+		{
+			sprite.graphic.destroy();
+		}
+		sprite = FlxDestroyUtil.destroy(sprite);
+		for (i in 0...view.scene.numChildren)
+		{
+			if (view.scene.getChildAt(i) != null)
+			{
+				view.scene.getChildAt(i).disposeWithChildren();
+				view.scene.removeChildAt(i);
+			}
+		}
+		FlxG.removeChild(view);
+		view.dispose();
+		@:privateAccess
+		if (fb != null)
+		{
+			FlxG.stage.context3D.gl.deleteFramebuffer(fb);
+			trace("DELETED");
+		}
+		fb = null;
+		view = null;
+	}
 }
