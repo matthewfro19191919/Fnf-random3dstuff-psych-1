@@ -299,6 +299,10 @@ class ModelThing
 		playAnim("idle");
 	}
 
+	public function update()
+	{
+	}
+
 	public function playAnim(anim:String = "", force:Bool = false, offset:Int = 0)
 	{
 		if (fullyLoaded)
