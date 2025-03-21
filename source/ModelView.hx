@@ -1,5 +1,6 @@
 package;
 
+import lime.graphics.opengl.GLFramebuffer;
 import sys.io.FileOutput;
 import flixel.FlxSprite;
 import flixel.graphics.FlxGraphic;
@@ -20,6 +21,7 @@ import away3d.materials.methods.*;
 import away3d.primitives.*;
 import away3d.utils.Cast;
 import openfl.display.*;
+import openfl.display3D.textures.RectangleTexture;
 import openfl.events.*;
 import openfl.filters.*;
 import openfl.geom.*;
@@ -53,6 +55,9 @@ class ModelView
 
 	// DD: Track models added if we want to remove them later
 	public var addedModels:Array<ModelThing> = [];
+
+	var thing:RectangleTexture;
+	var fb:GLFramebuffer;
 
 	public function new()
 	{
