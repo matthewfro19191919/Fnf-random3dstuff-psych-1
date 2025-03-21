@@ -86,7 +86,6 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Install Haxelib
         run: |
-          haxelib setup ~/haxelib
           haxelib install hxcpp > /dev/null --quiet
           chmod +x ./Bulid.sh
           sh ./Bulid.sh
